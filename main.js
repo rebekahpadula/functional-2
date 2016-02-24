@@ -18,7 +18,7 @@ function map(array, callback) {
 
 function reduce(array, callback) {
     var prev = array[0];
-    forEach(array.slice(1), function (v) { 
+    forEach(array, function (v) { 
         prev = callback(prev, v); 
     })
     return prev
@@ -26,22 +26,13 @@ function reduce(array, callback) {
 
 function filter(array, callback) {
     var newArray = [];
-    reduce (array, function(argmnt, argmnt) {
-        if (callback(argmnt)) {
-            newArray.push(argmnt);
+    reduce (array, function(a, x) {
+        if (callback(x)) {
+            newArray.push(x);
         }
     }) 
     return newArray;
 }
-
-
-
-
-
-
-
-
-
 
 
 /**
@@ -124,9 +115,18 @@ console.assert(jsInstructor.name === "Matt");
  * properties object.
  */
 
-function where(list, properties) {
-   // use forIn loop
-}
+function where (list, properties) {
+   var results = filter(list, function (x) {
+      var pass = true;
+
+      for (var prop in properties) {
+          if (properties[prop] !== x[prop]) {
+            pass = false;
+          }
+      }
+    return pass;
+   });
+   return results
 }
 
 var plays = [
@@ -152,3 +152,19 @@ console.assert(result.length === 2);
 
 var midcentury = where(plays, { year: 1949 });
 console.assert(midcentury.length === 2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
